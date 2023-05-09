@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <section id="control-panel">
+        <button id="toggle-pan">Toggle Pan</button>
+        <button id="toggle-drawing">Toggle Drawing</button>
+        <input type="range" value="10" min="0" max="60" id="drawing-line-width" />
+        <input type="color" value="#005E7A" id="drawing-color" />
+        <button id="to-json">To JSON</button>
+        <button id="load-json">Load JSON</button>
+        <button id="clear-all">Clear all</button>
+        <button id="set-transparent-background">Set transparent background Color</button>
+        <button id="undo">Undo</button>
+        <button id="redo">Redo</button>
+        <input type="color" name="" id="text-color" />
+        <button id="add-text-to-canvas">Add text to canvas</button>
+        <div>Face 😏</div>
+        <button class="shape" data-name="face-0">
+          <img src="./assets/face/face-0.svg" alt="" />
+        </button>
+        <button class="shape" data-name="face-1">
+          <img src="./assets/face/face-1.svg" alt="" />
+        </button>
+        <div>Eyes 👀</div>
+        <button class="shape" data-name="eyes-0">
+          <img src="./assets/eyes/eyes-0.svg" alt="" />
+        </button>
+        <button class="shape" data-name="eyes-1">
+          <img src="./assets/eyes/eyes-1.svg" alt="" />
+        </button>
+        <button class="shape" data-name="eyes-2">
+          <img src="./assets/eyes/eyes-2.svg" alt="" />
+        </button>
+        <button class="shape" data-name="eyes-3">
+          <img src="./assets/eyes/eyes-3.svg" alt="" />
+        </button>
+        <button class="shape" data-name="eyes-4">
+          <img src="./assets/eyes/eyes-4.svg" alt="" />
+        </button>
+        <div>Blush 😊</div>
+        <button class="shape" data-name="blush-0">
+          <img src="./assets/blush/blush-0.svg" alt="" />
+        </button>
+        <div>Mouth 👄</div>
+        <button class="shape" data-name="mouth-0">
+          <img src="./assets/mouth/mouth-0.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-1">
+          <img src="./assets/mouth/mouth-1.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-2">
+          <img src="./assets/mouth/mouth-2.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-3">
+          <img src="./assets/mouth/mouth-3.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-4">
+          <img src="./assets/mouth/mouth-4.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-5">
+          <img src="./assets/mouth/mouth-5.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-6">
+          <img src="./assets/mouth/mouth-6.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-7">
+          <img src="./assets/mouth/mouth-7.svg" alt="" />
+        </button>
+        <button class="shape" data-name="mouth-8">
+          <img src="./assets/mouth/mouth-8.svg" alt="" />
+        </button>
+        <div>droplet💧</div>
+        <button class="shape" data-name="droplet-0">
+          <img src="./assets/droplet/droplet-0.svg" alt="" />
+        </button>
+        <div>hat🎩</div>
+        <button class="shape" data-name="hat-0">
+          <img src="./assets/hat/hat-0.svg" alt="" />
+        </button>
+        <div>decorations🎄</div>
+        <button class="shape" data-name="decorations-0">
+          <img src="./assets/decorations/decorations-0.svg" alt="" />
+        </button>
+        <button class="shape" data-name="decorations-1">
+          <img src="./assets/decorations/decorations-1.svg" alt="" />
+        </button>
+        <button class="shape" data-name="decorations-2">
+          <img src="./assets/decorations/decorations-2.svg" alt="" />
+        </button>
+        <button class="shape" data-name="decorations-3">
+          <img src="./assets/decorations/decorations-3.svg" alt="" />
+        </button>
+      </section>
+      <section class="main-container">
+        <canvas id="c"></canvas>
+        <ul id="layer-list"></ul>
+      </section>
+    </div>
+  </body>
+</html>
