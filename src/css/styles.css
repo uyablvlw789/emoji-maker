@@ -2,6 +2,11 @@
   cursor: pointer;
 }
 
+#to-json.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 #container button img {
   width: 30px;
   height: 30px;

@@ -15,7 +15,7 @@ import "./css/styles.css";
 import "./toggleTab.js";
 import * as DownloadModule from "./download.js";
 import "fabric-history";
-
+import "./drawing.js";
 
 // 初始化 懒加载
 // const lazyContent = new LazyLoad();
@@ -44,12 +44,18 @@ alterScaleControl(canvas);
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
 
+let temp = params.get("temp");
+
 if (id) {
-  id = parseInt(id);
+  id = String(id);
   const t = id.slice(6);
-  const tid = id.slice(0, 5);
+  const tid = id.slice(0, 6);
   updateHistory();
-  DownloadModule.readData(tid, t);
+  DownloadModule.readData(t, tid);
+} else if (temp) {
+  temp = String(temp);
+  updateHistory();
+  DownloadModule.readData(null, null, temp);
 } else {
   loadSVGs(canvas);
 }
@@ -137,6 +143,7 @@ export function removeActiveObject() {
 }
 
 document.querySelector("#clear-all").addEventListener("click", () => {
+  document.querySelector("#to-json").classList.add("disabled");
   canvas.remove(...canvas.getObjects());
   setLayerData();
   showCurrentLayerInfo(layerData);

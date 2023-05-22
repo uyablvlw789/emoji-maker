@@ -10,10 +10,14 @@ import {
 const container = document.querySelector("#layer-list");
 
 const swap = function (nodeA, nodeB) {
-  const parentA = nodeA.parentNode;
+  let parentA;
+
+  parentA = nodeA.parentNode;
+
   const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
 
   // Move `nodeA` to before the `nodeB`
+
   nodeB.parentNode.insertBefore(nodeA, nodeB);
 
   // Move `nodeB` to before the sibling of `nodeA`
@@ -52,7 +56,8 @@ const handleDrop = (eventType) => {
     }`;
   });
 
-  const selectedLayerIndex = document.querySelector("#container li.active")?.dataset.index;
+  const selectedLayerIndex = document.querySelector("#container li.active")
+    ?.dataset.index;
 
   selectedLayerIndex && setActiveObjectOnCanvas(selectedLayerIndex);
 };
@@ -82,7 +87,7 @@ const handleDragover = (e) => {
 
   if (afterElement === null) {
     container.appendChild(draggable);
-  } else {
+  } else if (draggable && afterElement) {
     swap(draggable, afterElement);
   }
 };
@@ -122,9 +127,13 @@ export function makeListItemsDraggable() {
 
 function getDragAfterElement(container, y) {
   // get reference to those elements not dragging
-  const draggableElements = [...container.querySelectorAll("#container .draggable")];
+  const draggableElements = [
+    ...container.querySelectorAll("#container .draggable"),
+  ];
 
-  const ulHeight = document.querySelector("#container ul").getBoundingClientRect().y;
+  const ulHeight = document
+    .querySelector("#container ul")
+    .getBoundingClientRect().y;
   const index = Math.floor((y - ulHeight) / 42);
   return draggableElements[index];
 }

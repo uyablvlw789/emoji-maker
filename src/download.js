@@ -1,3 +1,4 @@
+import { PRODUCTION_MODE } from "./config.js";
 import {
   canvas,
   setLayerData,
@@ -50,39 +51,85 @@ document.getElementById("to-svg").addEventListener("click", () => {
 
 let jsonData;
 var save_status = 2;
-document.getElementById("to-json").addEventListener("click", async (e) => {
-  if (save_status < 2) {
+document
+  .getElementById("to-json")
+  .addEventListener("click", async function (e) {
+    const _class = (
+      "" +
+      document.querySelector("#to-json").className +
+      ""
+    ).indexOf("disabled");
+    if (_class > -1) {
+      return false;
+    }
+    if (save_status < 2) {
+      return false;
+    }
+    document.querySelector("#to-json .downloading").classList.remove("hide");
+
+    let language_code = document.querySelector("html").getAttribute("lang");
+
+    save_status = 1;
+    jsonData = JSON.stringify({ data: canvas });
+    if (!PRODUCTION_MODE) {
+      console.log("[download.js] jsonData:", jsonData);
+    }
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: jsonData,
+    };
+
+    fetch("/en/maker-save", requestOptions)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        let login_text, success_text, saved;
+        if (PRODUCTION_MODE) {
+          login_text = document.querySelector(".login_text").textContent;
+
+          success_text = document.querySelector(".success_text")?.textContent;
+
+          saved = document.querySelector(".saved")?.textContent;
+        }
+
+        const toJSONText = document.querySelector("#to-json")?.textContent;
+
+        document.querySelector("#to-json .downloading")?.classList.add("hide");
+
+        // disable download button
+        document.querySelector("#to-json").classList.add("disabled");
+
+        if (data.code == 1) {
+          toast(login_text);
+          // enable download button
+          localStorage.setItem("maker_temp_id", data.data);
+
+          window.location.href = "/" + language_code + "/login?cache=0";
+        } else if (data.code == 200) {
+          toast(success_text);
+          document.querySelector("#to-json").textContent = saved;
+
+          setTimeout(() => {
+            document.querySelector("#to-json").textContent = toJSONText;
+          }, 2000);
+        } else {
+          toast(data.msg);
+        }
+        save_status = 2;
+      })
+      .catch((err) => {
+        // enable download button
+        document.querySelector("#to-json").classList.remove("disabled");
+
+        document.querySelector("#to-json .downloading").classList.add("hide");
+        toast("error");
+        save_status = 2;
+      });
     return false;
-  }
-  document.querySelector("#to-json .downloading").classList.remove("hide");
-
-  save_status = 1;
-  jsonData = JSON.stringify({ data: canvas });
-
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: jsonData,
-  };
-
-  fetch("/en/maker-save", requestOptions)
-    .then((res) => {
-      return res.json();
-    })
-    .then((data) => {
-      document.querySelector("#to-json .downloading").classList.add("hide");
-      if (data.code != 200) {
-        toast(data.msg);
-      }
-      save_status = 2;
-    })
-    .catch((err) => {
-      document.querySelector("#to-json .downloading").classList.add("hide");
-      toast("error");
-      save_status = 2;
-    });
-  return false;
-});
+  });
 
 function toast(text) {
   document.querySelector(".toast-body p").textContent = text;
@@ -96,9 +143,6 @@ function toast(text) {
   }, 2000);
 }
 
-// document.querySelector("#render-canvas-from-json").addEventListener("click", () => {
-//   renderCanvasFromJson(jsonData);
-// });
 function renderCanvasFromJson(jsonData) {
   canvas.clear();
   canvas.loadFromJSON(jsonData, () => {
@@ -112,10 +156,15 @@ function renderCanvasFromJson(jsonData) {
   });
 }
 
-// var t = id.slice(6);
+export async function readData(id, date, temp = false) {
+  let makerUrl;
+  if (temp) {
+    makerUrl = `/maker/temp/temp-${temp}-data.json`;
+  } else {
+    makerUrl = `/maker/${date}/maker-${id}-data.json`;
+  }
 
-export async function readData(id, date) {
-  return fetch(`/maker/${date}/maker-${id}-data.json`)
+  return fetch(makerUrl)
     .then((res) => {
       if (res.status === 404) {
         throw new Error("file not found");

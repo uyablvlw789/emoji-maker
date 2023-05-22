@@ -1,6 +1,16 @@
 import LazyLoad from "vanilla-lazyload";
 
+import { PRODUCTION_MODE } from "./config.js";
+
+console.log("[renderAssetMenu.js]PRODUCTION_MODE", PRODUCTION_MODE);
+
 const html = String.raw;
+
+const path = PRODUCTION_MODE
+  ? "/sites/all/themes/emoji_2020/assets"
+  : "./assets";
+
+const imgPath = PRODUCTION_MODE ? "/img" : ".";
 
 const buttonTemplate = function (category, index) {
   return html` <button
@@ -9,8 +19,8 @@ const buttonTemplate = function (category, index) {
   >
     <img
       class="lazy"
-      src="./translate-loading.svg"
-      data-src="./assets/${category}/${category}-${index}.svg"
+      src="${imgPath}/translate-loading.svg"
+      data-src="${path}/${category}/${category}-${index}.svg"
       alt="${category}-${index}"
     />
   </button>`;
@@ -42,7 +52,10 @@ export function renderAssetMenu(positionData, iconsData) {
 
     secondaryMenu.insertAdjacentHTML(
       "afterend",
-      html` <div data-label="${category}" class="secondary-tab-content ${i === 0 && "active"} ">
+      html` <div
+        data-label="${category}"
+        class="secondary-tab-content ${i === 0 && "active"} "
+      >
         ${renderedButtons}
       </div>`
     );
@@ -51,7 +64,9 @@ export function renderAssetMenu(positionData, iconsData) {
 
   const secondaryTabs = document.querySelectorAll(".secondary-tab");
 
-  const secondaryTabContents = document.querySelectorAll(".secondary-tab-content");
+  const secondaryTabContents = document.querySelectorAll(
+    ".secondary-tab-content"
+  );
   secondaryTabs.forEach(function (secondaryTab) {
     secondaryTab.addEventListener("click", () => {
       secondaryTabs.forEach((secondaryTab) => {
